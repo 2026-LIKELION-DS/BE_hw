@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>당신이 입력한 텍스트는 {{ total_word_count }} 단어로 구성되어 있습니다.</h1>
+
+    <h1>입력한 텍스트: </h1>
+    {{ alltext }}
+
+    <h1>가장 많이 입력된 단어</h1>
+    {% if dictionary %}
+    <p>[{{ dictionary.0.0 }}] ({{ dictionary.0.1 }}번)</p>
+{% else %}
+    <p>입력된 단어가 없습니다.</p>
+{% endif %}
+
+    <h1>글자 수 세기</h1>
+    <p>{{ alltext|length }}자</p>
+
+    <h1>띄어쓰기 제외 글자 수 세기</h1>
+    <p>{{ no_space_cnt }}자</p>
+
+    <a href="{% url 'wordcount:index' %}">다시하기</a>
+</body>
+</html>
