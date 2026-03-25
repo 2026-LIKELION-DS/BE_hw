@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>문서 제목</title>
+  </head>
+  <body>
+    <form action="{% url 'wordcount:index' %}" method="get">
+      <input type="submit" value="index 페이지로 가기" />
+    </form>
+    <h1>Word Count</h1>
+
+    <form action="{% url 'wordcount:result' %}" method="get">
+      <textarea name="fulltext" cols="40" rows="20"></textarea>
+      <br />
+      <input type="submit" value="Count!" />
+    </form>
+  </body>
+</html>

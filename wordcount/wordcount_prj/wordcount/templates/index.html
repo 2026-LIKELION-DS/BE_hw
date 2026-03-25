@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>문서 제목</title>
+  </head>
+  <body>
+    <h1>멋사 사랑해요</h1>
+
+    <h1>스터디 과제</h1>
+
+    <h2>이름을 적어보세요!</h2>
+
+    <form action="{% url 'wordcount:hello' %}" method="get">
+    <input type="text" name="name" placeholder="이름 입력" required>
+    <br />
+    <input type="submit" value="확인" />
+</form>
+
+
+    <form action="{% url 'wordcount:word_count' %}" method="get">
+      <input type="submit" value="wordCount 하러 가기" />
+    </form>
+
+  </body>
+</html>

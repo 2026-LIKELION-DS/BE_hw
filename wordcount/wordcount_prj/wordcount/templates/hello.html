@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>문서 제목</title>
+  </head>
+  <body>
+
+    <form action="{% url 'wordcount:index' %}" method="get">
+      <input type="submit" value="index 페이지로 가기" />
+    </form>
+
+    <from>
+    {% if name %}
+        <h1>안녕하세요, {{ name }}님!</h1>
+    {% else %}
+        <h1>안녕하세요!</h1>
+{% endif %}
+    <from/>
+
+<br><br>
+
+<form action="{% url 'wordcount:index' %}" method="get">
+    <input type="submit" value="다시 입력">
+</form>
+  </body>
+</html>

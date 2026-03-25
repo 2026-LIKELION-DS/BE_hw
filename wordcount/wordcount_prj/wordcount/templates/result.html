@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>문서 제목</title>
+  </head>
+  <body>
+    <form action="{% url 'wordcount:index' %}" method="get">
+      <input type="submit" value="index 페이지로 가기" />
+    </form>
+
+    <h1>당신이 입력한 텍스트는 {{total}} 단어로 구성되어 있습니다.</h1>
+    <!-- 입력받은 전체 텍스트 -->
+    <h1>입력한 텍스트:</h1>
+    {{ alltext }}
+    <!-- '단어' - '단어가 나온 횟수' -->
+    <h1>가장 많이 입력된 단어</h1>
+    {% for word in most_common_words %} [{{ word }}] ({{max_count}}회)
+    <br />
+    {% endfor %}
+
+    <h1>글자 수 세기</h1>
+    {{total_len}}
+
+    <h1>띄어쓰기 제외 글자 수 세기</h1>
+    {{no_space_len}}
+    <br />
+
+    <form action="{% url 'wordcount:word_count' %}" method="get">
+      <input type="submit" value="다시하기" />
+    </form>
+  </body>
+</html>
