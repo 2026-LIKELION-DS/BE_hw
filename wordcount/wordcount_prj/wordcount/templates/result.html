@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <a href="{% url 'wordcount:index' %}">index 페이지로 가기</a> <!-- 과제: index와 word-count 페이지 연결-->
+
+    <h1>당신이 입력한 테스트는 {{ count }} 단어로 구성되어 있습니다.</h1> <!-- 과제: 단어 수 구현-->
+
+    <!-- 입력 전체 문장 -->
+    <h1>입력한 텍스트 : </h1>
+    {{ alltext }}
+
+    <!-- '단어' : '빈도 수' -->
+    <h1>단어 카운트:</h1>
+    {% for word, frequency in dictionary %}
+        {{ word }} : {{ frequency }}
+        <br>
+    {% endfor %}
+
+    <!-- 과제: 가장 많이 입력된 단어-->
+    <h2>가장 많이 입력된 단어</h2>
+    <p>[{{ max_word }}]({{ max_count }}회)</p>
+
+    <!-- 과제: 글자 수 세기-->
+    <h2>글자 수</h2>
+    <p>{{ total_len }}자</p>
+
+    <!-- 과제: 띄어쓰기 제외-->
+    <h2>띄어쓰기 제외 글자 수 세기</h2>
+    <p>{{ no_space_len }}자</p>
+
+    <a href="{% url 'wordcount:word_count' %}">다시하기</a> <!-- 과제: 다시하기 버튼 구현-->
+
+    
+</body>
+</html>
