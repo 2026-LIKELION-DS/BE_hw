@@ -1,0 +1,8 @@
+{% if error %}
+    <p>{{ error }}</p>
+{% else %}
+    <h2>생성된 비밀번호:</h2>
+    <p>{{ password }}</p>
+{% endif %}
+
+<a href="{% url 'password:index' %}">다시 만들기</a>
