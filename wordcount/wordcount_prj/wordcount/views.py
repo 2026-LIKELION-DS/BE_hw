@@ -14,7 +14,7 @@ def result(request):
     total_count = len(word_list)
     full_length = len(entered_text)
     no_space_length = len(entered_text.replace(" ", ""))
-
+    
     word_dictionary = {}
 
     for word in word_list:
