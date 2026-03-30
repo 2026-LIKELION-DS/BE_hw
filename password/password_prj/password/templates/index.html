@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>무작위로 비밀번호를 생성해봅시다!</h1>
+    <a>비밀번호 길이를 입력하세요.</a>
+    <form action ="{%url 'password:result' %}" method="get">
+        <textarea name="fulltext" cols="20" rows="1"></textarea>
+        <br />
+        <p><input type="checkbox" name="EL"> 영어 대문자 포함</p>
+        <p><input type="checkbox" name="ES"> 영어 소문자 포함</p>
+        <p><input type="checkbox" name="num"> 숫자 포함</p>
+        <p><input type="checkbox" name="spe"> 특수문자 포함</p>
+        <button type="submit">비밀번호 생성</button>
+    </form>
+
+</body>
+</html>
