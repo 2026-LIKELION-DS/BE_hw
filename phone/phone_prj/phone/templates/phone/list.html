@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="{% url 'phone:search_result' %}" method="GET">
+        <input type="text" name="keyword">
+        <button type="submit">검색</button>
+</form>
+<hr> {% for contact in contacts %}
+    <div style="margin-bottom: 20px;">
+        <p><strong>이름 : {{ contact.name }}</strong></p>
+        <p>전화번호 : {{ contact.phone_num }}</p>
+    </div>
+    <hr> {% endfor %}
+</body>
+</html>
