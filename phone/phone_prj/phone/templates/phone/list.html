@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>연락처 목록</title>
+  </head>
+  <body>
+    <form action="{% url 'phone:result' %}" method="get">
+    <input type="text" name="name" placeholder="이름 입력" required>
+    <input type="submit" value="검색" />
+</form>
+    <h1>연락처 목록</h1>
+
+    {% for post in posts %}
+        <h2> 이름 : {{post.name}} </h2> <br>
+        <p> 전화번호 : {{post.number}} </p><hr>
+
+    {% endfor %}
+
+  </body>
+</html>

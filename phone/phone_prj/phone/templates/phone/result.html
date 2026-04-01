@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>검색 결과</title>
+</head>
+<body>
+
+  <h1>"{{ query }}" 검색 결과 페이지 입니다.</h1>
+
+  {% if posts %}
+    {% for post in posts %}
+        <h2>이름 : {{ post.name }}</h2>
+        <p>전화번호 : {{ post.number }}</p><hr>
+
+    {% endfor %}
+  {% else %}
+    <p>해당 검색어와 관련된 정보가 없습니다.</p>
+  {% endif %}
+
+</body>
+</html>
