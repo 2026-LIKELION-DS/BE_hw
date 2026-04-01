@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>새로운 연락처</h2>
+    <form method="POST" action="{% url 'phone:create' %}">
+        {% csrf_token %}
+        이름 - <input type="text" name="name" value="{{ name|default:'' }}"><br><br>
+        전화번호 - <textarea name="phone_num">{{ phone_num|default:'' }}</textarea><br><br>
+        이메일 - <textarea name="email">{{ email|default:'' }}</textarea><br><br>
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
+        <input type="submit" value="추가하기">
+    </form>
+</body>
+</html>
