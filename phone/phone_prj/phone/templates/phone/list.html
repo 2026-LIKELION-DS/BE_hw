@@ -12,14 +12,19 @@
     <form action="{% url 'phone:result' %}" method="GET">
     <input type="text" name="search" placeholder="이름 또는 번호 검색">
     <button type="submit">검색</button>
+    <hr>
 </form>
     <!--전화번호부-->
     {% for phone in phones %}
-    <h2>이름: <a href="{% url 'phone:detail' phone.id %}">{{ phone.name }}</a></h2>
-    <p>전화번호: {{ phone.phone_num }}</p>
+    <a href="{% url 'phone:detail' phone.id %}">{{ phone.name }}</a>
+    {{ phone.phone_num }}
+    <a href="{% url 'phone:update' phone.id %}">수정</a>
+    <a href="{% url 'phone:delete' phone.id %}">삭제</a>
+    <hr>
     {% empty %}
-    <p>저장된 연락처가 없습니다.</p>
-    {% endfor %}    </body>
-    <a href="{% url 'phone:create' %}">전화번호 등록하기</a>
-
+    <p>등록된 연락처가 없습니다.</p>
+    {% endfor %}    
+    <!--CREATE : 전화번호 등록-->
+    <a href="{% url 'phone:create' %}">새 번호 등록</a>
+</body>
 </html>

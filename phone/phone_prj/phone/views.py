@@ -29,9 +29,25 @@ def result(request):
     # 사용자가 입력한 검색어 가져오기
     search_word = request.GET.get('search') 
 
-    if search_word:
-        posts = Phone.objects.filter(Q(name__contains=search_word) | Q(phone_num__contains=search_word))
-    else:
-        posts = Phone.objects.none() # 검색어가 없으면 빈 결과 반환
+    phones = Phone.objects.filter(name__contains=search_word).order_by('name')
+    return render(request, 'phone/result.html', {'phones': phones, 'search_word': search_word})
 
-    return render(request, 'phone/result.html', {'posts': posts, 'search_word': search_word})
+def update(request, id):
+    phone = get_object_or_404(Phone, id=id)
+
+    if request.method == 'POST':
+        phone.name = request.POST.get('name')
+        phone.phone_num = request.POST.get('phone_num')
+        phone.email = request.POST.get('email')
+        phone.save()
+        return redirect('phone:detail', id)
+    return render(request, 'phone/update.html', {'phone':phone})
+
+def delete(request, id):
+    phone = get_object_or_404(Phone, id=id)
+
+    if request.method == 'POST':
+        phone.delete()
+        return redirect('phone:list')
+    return render(request, 'phone/delete.html', {'phone':phone})
+    

@@ -6,11 +6,12 @@
     <title>Document</title>
 </head>
 <body>
-    <h2>연락처 상세 정보</h2>
+    <h2>연락처 상세 조회</h2>
     <p>이름: {{ phone.name }}</p>
     <p>전화번호: {{ phone.phone_num }}</p>
     <p>이메일: {{ phone.email }}</p>
-    <hr><br>
-    <a href="{% url 'phone:list' %}">목록으로 돌아가기
+    <p>생성 일자: {{ phone.created_at|date:"M d, Y" }}</p>
+    <br>
+    <a href="{% url 'phone:list' %}">연락처 목록으로 돌아가기</a>
 </body>
 </html>
