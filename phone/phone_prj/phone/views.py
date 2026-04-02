@@ -39,7 +39,7 @@ def update(request, id):
     if request.method == "POST":
         phone.name = request.POST.get('name')
         phone.phone_num = request.POST.get('phone_num')
-        email = request.POST.get('email')
+        phone.email = request.POST.get('email')
         phone.save()
         return redirect('phone:detail',id)
     
