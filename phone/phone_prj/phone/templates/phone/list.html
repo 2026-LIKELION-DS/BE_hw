@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>연락처</h1>
+    <br>
+    <!--검색창-->
+    <form action="{% url 'phone:result' %}" method="GET">
+    <input type="text" name="search" placeholder="이름 또는 번호 검색">
+    <button type="submit">검색</button>
+</form>
+    <!--전화번호부-->
+    {% for phone in phones %}
+    <h2>이름: <a href="{% url 'phone:detail' phone.id %}">{{ phone.name }}</a></h2>
+    <p>전화번호: {{ phone.phone_num }}</p>
+    {% empty %}
+    <p>저장된 연락처가 없습니다.</p>
+    {% endfor %}    </body>
+    <a href="{% url 'phone:create' %}">전화번호 등록하기</a>
+
+</html>

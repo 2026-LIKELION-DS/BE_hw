@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>'{{ search_word }}'에 대한 검색 결과</h1>
+    {% for post in posts %}
+        <div>
+            <h3>이름: {{ post.name }}</h3>
+            <p>번호: {{ post.phone_num }}</p>
+        </div>
+        <hr>
+    {% empty %}
+        <p>해당 검색어와 관련된 전화번호가 없습니다.</p>
+    {% endfor %}
+<a href="{% url 'phone:list' %}">목록으로 돌아가기</a>
+</body>
+</html>

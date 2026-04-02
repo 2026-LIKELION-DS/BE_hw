@@ -13,11 +13,10 @@
 
     <p>이름을 적어 보세요!</p>
 
-    <form action="{% url 'wordcount:hello' %}">
+    <form action="{% url 'wordcount:hello' %}" method="GET">
     <input type="text" name="name">
     <input type="submit" value="확인">
-</form>
-
+    </form>
     <a href="{% url 'wordcount:word_count' %}">WordCount 하러 가기</a> <!-- 과제: index와 word-count 페이지 연결-->
 </body>
 </html>

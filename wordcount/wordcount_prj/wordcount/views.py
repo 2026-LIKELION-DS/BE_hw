@@ -3,13 +3,13 @@ from django.shortcuts import render
 # Create your views here.
 
 def index(request):
-    return render(request, 'index.html') #index 함수 실행하면 index.html 파일 보여 줌
+    return render(request, 'wordcount/index.html') #index 함수 실행하면 index.html 파일 보여 줌
 
 def word_count(request):
-    return render(request, 'word_count.html')
+    return render(request, 'wordcount/word_count.html')
 
 def result(request):
-    entered_text = request.GET['fulltext'] # 요청이 들어오면 fulltext를 가져옴
+    entered_text = request.GET.get('fulltext') # 요청이 들어오면 fulltext를 가져옴
     word_list = entered_text.split() #entered_text를 공백 기준으로 문자열 나눔
 
     word_dictionary = {}
@@ -35,7 +35,7 @@ def result(request):
     # 과제: 글자 수 띄어쓰기 제외
     no_space_len = len(entered_text.replace(" ", ""))
 
-    return render(request, 'result.html',
+    return render(request, 'wordcount/result.html',
     {'alltext': entered_text,
     'dictionary':word_dictionary.items(),
     'count':len(word_list),
@@ -46,4 +46,4 @@ def result(request):
 
 def hello(request):
     name = request.GET['name']
-    return render(request, 'hello.html', {'name': name})
+    return render(request, 'wordcount/hello.html', {'name': name})
