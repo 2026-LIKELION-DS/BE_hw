@@ -14,11 +14,17 @@
         </form>
 
         {% for phone in phones %}
-        <h3>이름: {{ phone.name }}</h3>
-        <p>전화번호: {{ phone.phone_num }}</p>
-        <hr />
+        
+
+        <p><a href="{% url 'phone:detail' phone.id %}">{{ phone.name }}</a> 전화번호: {{ phone.phone_num }}
+        <a href="{% url 'phone:update' phone.id %}">수정</a>
+        <a href="{% url 'phone:delete' phone.id %}">삭제</a><hr>
+        </p>
+        
+
         {% empty %}
-        <p>비어있음</p>
+        <p>등록된 연락처가 없습니다.</p><hr>
         {% endfor %}
+        <a href="{% url 'phone:create' %}">새 번호 등록</a>
     </body>
 </html>
