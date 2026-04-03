@@ -10,13 +10,14 @@
 
   {% if posts %}
     {% for post in posts %}
-        <h2>이름 : {{ post.name }}</h2>
-        <p>전화번호 : {{ post.number }}</p><hr>
+        <p><a href="{% url 'phone:detail' post.id %}">{{ post.name }}</a> {{ post.number }}</p><hr>
 
     {% endfor %}
   {% else %}
     <p>해당 검색어와 관련된 정보가 없습니다.</p>
   {% endif %}
+
+  <a href="{% url 'phone:phone_list' %}">연락처 목록으로 돌아가기</a>
 
 </body>
 </html>

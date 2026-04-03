@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>검색 결과</title>
+</head>
+<body>
+
+{% if query %}
+    <h1>"{{ query }}" - 검색 결과</h1>
+{% else %}
+    <h1>검색어 없음</h1>
+{% endif %}
+
+{% if posts %}
+    {% for post in posts %}
+        <h2><a href="{% url 'posts:detail' post.id %}">{{ post.title }}</a></h2>
+        <p>{{ post.content }}</p><hr>
+    {% endfor %}
+{% else %}
+    <p>해당 검색어와 관련된 정보가 없습니다.</p>
+{% endif %}
+
+<a href="{% url 'posts:list' %}">돌아가기</a>
+
+</body>
+</html>

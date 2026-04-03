@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h2>글 수정</h2>
+    <form action="{% url 'phone:update' phone.id %}" method="POST">
+        {% csrf_token %}
+    이름 : <input type="text" name="name" value="{{ phone.name }}"><br>
+    번호 : <input type="text" name="number" value="{{ phone.number }}"><br>
+    이메일 :  <input type="text" name="email" value="{{ phone.email }}"><br>
+    <button type="submit">수정하기</button>
+    </form>
+
+  </body>
+</html>

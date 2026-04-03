@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>연락처 목록</title>
+  </head>
+  <body>
+
+    <form method="POST" action="{% url 'posts:create' %}">
+        {% csrf_token %}
+    이름 : <input type="text" name="name"><br><br>
+    번호 : <input type="text" name="number"><br><br>
+    이메일 : <input type="text" name="email"><br><br>>
+    <input type="submit" value="작성하기">
+  </form>
+
+  </body>
+</html>
