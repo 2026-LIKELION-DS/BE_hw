@@ -6,12 +6,13 @@
     <title>Document</title>
 </head>
 <body>
-    <h2>글 작성</h2>        
-    <form method="POST" action="{% url 'blog:create' %}">
-        {% csrf_token %}  <!--csrf 공격 방지하는 보안 토큰-->
-        제목 - <input type="text" name="title"><br><br>
-        내용 - <textarea name="content"></textarea><br><br>
-        <input type="submit" value="작성하기">
+    <h2>연락처 등록</h2>        
+    <form method="POST" action="{% url 'phone:create' %}">
+        {% csrf_token %}
+        이름: <input type="text" name="name"><br><br>
+        번호: <input type="text" name="phone_num"></input><br><br>
+        이메일: <input type="email" name="email"></input><br><br>
+        <input type="submit" value="등록"></a>
     </form>
 </body>
 </html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>연락처 수정</h1>
+    <form method="POST" action="{% url 'phone:update' contact.id %}">
+        {% csrf_token %}
+        이름: <input type="text" value="{{ contact.name }}" name="name"><br><br>
+        번호: <input type="text" value="{{ contact.phone_num }}" name="phone_num"></input><br><br>
+        이메일: <input type="text" value="{{ contact.email }}" name="email"></input><br><br>
+        <button type="submit">수정</button>
+    </form>
+</body>
+</html>

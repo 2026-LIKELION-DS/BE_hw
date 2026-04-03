@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>삭제</title>
+</head>
+<body>
+    <h1>연락처 삭제</h1>      
+    <p>연락처 "{{ contact.name }}"을 삭제하시겠습니까?</p>
+
+    <form method="POST" action="{% url 'phone:delete' contact.id %}">
+        {% csrf_token %}
+        <button type="submit">삭제</button>
+    </form>
+    <br>
+    <a href="{% url 'phone:list' %}">취소</a>
+</body>
+</html>

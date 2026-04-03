@@ -6,15 +6,21 @@
     <title>Document</title>
 </head>
 <body>
+    <h2>연락처</h2>
     <form action="{% url 'phone:search_result' %}" method="GET">
         <input type="text" name="keyword">
         <button type="submit">검색</button>
 </form>
-<hr> {% for contact in contacts %}
+<hr> 
+    {% for contact in contacts %}
     <div style="margin-bottom: 20px;">
-        <p><strong>이름 : {{ contact.name }}</strong></p>
-        <p>전화번호 : {{ contact.phone_num }}</p>
+        <a href="{% url 'phone:detail' contact.id %}">{{ contact.name }}</a> 
+        {{ contact.phone_num }}
+        <a href="{% url 'phone:update' contact.id  %}">수정</a> 
+        <a href="{% url 'phone:delete' contact.id %}">삭제</a> 
     </div>
     <hr> {% endfor %}
+
+<a href="{% url 'phone:create' %}">새 번호 등록</a>
 </body>
 </html>

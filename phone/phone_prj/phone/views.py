@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from  .models import Contact
 
 def list(request):
@@ -31,3 +31,28 @@ def create(request):
         )
         return redirect('phone:list')
     return render(request, 'phone/create.html')
+
+def detail(request, id):
+    contact = get_object_or_404 (Contact, id=id)
+    return render(request, 'phone/create.html')
+
+def update(request, id):
+    contact = get_object_or_404(Contact, id=id)
+
+    if request.method == "POST":
+        contact.name = request.POST.get('name')
+        contact.phone_num = request.POST.get('phone_num')
+        contact.email = request.POST.get('email')
+        contact.save()
+        return redirect('phone:list')
+
+    return render(request, 'phone/update.html', {"contact": contact})
+
+
+def delete(request, id):
+    contact = get_object_or_404(Contact, id=id)
+
+    if request.method == "POST":
+        contact.delete()
+        return redirect('phone:list')
+    return render(request, 'phone/delete.html', {'contact': contact})
