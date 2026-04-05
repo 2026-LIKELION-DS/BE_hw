@@ -15,10 +15,16 @@
     <hr>
 
     {% for phone in phones %}
-    <h2>이름 : {{ phone.name }}</h2>
-    <a>전화번호 : {{ phone.phone_num }}</a>
+    <div style="border-bottom: 1px solid #ccc; padding: 10px;"></div>
+    <h3><a href = "{% url 'phone:detail' phone.id %}">{{ phone.name }}</a> {{ phone.phone_num }}</h3>
+
+    <a href = "{% url 'phone:update' phone.id %}">수정</a>
+    <a href = "{% url 'phone:delete' phone.id%}">삭제</a>
+
     {% empty %}
         해당 검색어와 관련된 전화번호가 없습니다.
     {% endfor %}
+    <br>
+    <a href ="{% url 'phone:create' %}">새 번호 등록</a>
 </body>
 </html>

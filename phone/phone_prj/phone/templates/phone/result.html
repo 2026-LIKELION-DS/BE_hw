@@ -10,11 +10,12 @@
 
     {% for phone in phones %}
     <div style="border-bottom: 1px solid #ccc; padding: 10px;">
-        <h2>이름 : {{ phone.name }}</h2>
-        <p>전화번호 : {{ phone.phone_num }}</p>
+        <h3><a href = "{% url 'phone:detail' phone.id %}">{{ phone.name }}</a> {{ phone.phone_num }}</h3>
     </div>
     {% empty %}
         <p> 해당 검색어와 관련된 전화번호가 없습니다. </p>
     {% endfor %}
+
+    <a href="{% url 'phone:list' %}">연락처 목록으로 돌아가기</a>
 </body>
 </html>

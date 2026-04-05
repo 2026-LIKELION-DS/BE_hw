@@ -6,16 +6,16 @@
     <title>Document</title>
 </head>
 <body>
-    <h2>새로운 연락처</h2>
+    <h2>연락처 등록</h2>
     <form method="POST" action="{% url 'phone:create' %}">
         {% csrf_token %}
-        이름 - <input type="text" name="name" value="{{ name|default:'' }}"><br><br>
-        전화번호 - <textarea name="phone_num">{{ phone_num|default:'' }}</textarea><br><br>
-        이메일 - <textarea name="email">{{ email|default:'' }}</textarea><br><br>
+        이름 : <input type="text" name="name" value="{{ name|default:'' }}"><br><br>
+        번호 : <input type="text" name="phone_num" value="{{ name|default:'' }}"><br><br>
+        이메일 : <input type="text" name="email" value="{{ name|default:'' }}"><br><br>
         {% if error %}
             <p style="color: red;">{{ error }}</p>
         {% endif %}
-        <input type="submit" value="추가하기">
+        <input type="submit" value="등록">
     </form>
 </body>
 </html>

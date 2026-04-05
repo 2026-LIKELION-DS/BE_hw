@@ -1,8 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Phone
 from django.shortcuts import get_object_or_404
-from django.core.validators import validate_email
-from django.core.exceptions import ValidationError
 
 # Create your views here.
 def list(request):
@@ -14,24 +12,8 @@ def create(request):
         name = request.POST.get('name')
         phone_num = request.POST.get('phone_num')
         email = request.POST.get('email')
-
-        try:
-            validate_email(email)
-
-            Phone.objects.create(
-                name=name, 
-                phone_num=phone_num, 
-                email=email
-            )
-            return redirect('phone:list')
-        
-        except ValidationError:
-            return render(request, 'phone/create.html', {
-                'error': 'Enter a valid email address.',
-                'name' : name,
-                'phone_num' : phone_num, 
-            })
-
+        created_at = request.POST.get('created_at')
+    
         phone = Phone.objects.create(
             name = name,
             phone_num = phone_num,
@@ -47,11 +29,12 @@ def detail(request, id):
 def update(request, id):
     phone = get_object_or_404(Phone, id=id)
 
-    if request.method == 'PHONE':
-        phone.name = request.PHONE.get('name')
-        phone.phone_num = request.PHONE.get('phone_num')
+    if request.method == 'POST':
+        phone.name = request.POST.get('name')
+        phone.phone_num = request.POST.get('phone_num')
+        phone.email = request.POST.get('email')
         phone.save()
-        return redirect('phone:datail', id)
+        return redirect('phone:list')
     return render(request, 'phone/update.html', {'phone':phone})
 
 def result(request):
@@ -63,3 +46,11 @@ def result(request):
         phones = Phone.objects.none()
 
     return render(request, 'phone/result.html', {'phones': phones, 'keyword':query})
+
+def delete(request, id):
+    phone = get_object_or_404(Phone, id=id)
+
+    if request.method == 'POST':
+        phone.delete()
+        return redirect('phone:list')
+    return render(request, 'phone/delete.html', {'phone':phone})
