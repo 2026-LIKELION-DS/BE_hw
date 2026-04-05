@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Post
+from django.views.generic import ListView
 
-def phone_list(request):
-    posts = Post.objects.all().order_by('name')
-    return render(request, 'phone/phone_list.html', {'posts':posts})
+class PhoneListView(ListView):
+    ueryset = Post.objects.all().order_by('name')
+    template_name = 'phone/phone_list.html'
+    context_object_name = 'posts'
+    model = Post
 
 def result(request):
     query = request.GET.get('name')
