@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>덕멋 인스타그램</h2>
+    <a href="{% url 'posts:create' %}">글 작성하기</a>
+    <hr>
+    <form action="{% url 'posts:result' %}" method="GET"> 
+        <input type="text" name="keyword">
+        <input type="submit" value="검색">
+    </form>
+    {% for post in posts %}
+        <h2> <a href="{% url 'posts:detail' post.id %}">{{ post.title }}</a> </h2>
+        <p> {{post.content}}</p>
+        <p> {{post.views}}</p>
+        <p> {{post.created_at}}</p>
+        <hr>
+    {% empty %}
+        <p>글이 없습니다.</p>
+    {% endfor %}
+
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+<body>
+    <form action="{% url 'phone:result' %}" method="GET">
+    {%csrf_token%}
+    <input type="text" name="keyword" />
+    <button type="submit">검색</button>
+    </form>
+
+    {% for phone in phones %}
+    <h2><a href="{% url 'phone:detail' phone.id %}">{{phone.name}}</a> </h2>
+    <h2>이름: {{ phone.name }}</h2>
+    <p>전화번호 : {{ phone.phone_num }}</p>
+    <a href="{% url 'phone:update' phone.id %}">수정</a>
+    <a href="{% url 'phone:delete' phone.id %}">삭제</a>
+    {%empty%}
+    <h3>등록된 연락처가 없습니다.</h3>
+    <hr />
+    {% endfor %}
+    <br>
+    <a href="{%url 'phone:create'%}">새 번호 등록</a>
+</body>
+</html>
