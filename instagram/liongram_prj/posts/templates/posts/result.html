@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result</title>
+</head>
+<body>
+    <h1>"{{ keyword }}" - 검색결과</h1>
+
+    {% for res in results %}
+    <div>
+        <h2><a href="{% url 'posts:detail' res.id %}">{{ res.title }}</a></h2>
+        <p>{{ res.content }}</p>
+    </div>
+    {% empty %}
+        <p>검색된 글이 없습니다.</p>
+    {% endfor %}
+    
+
+    <a href="{% url 'posts:list' %}">돌아가기</a> 
+</body>
+</html>
