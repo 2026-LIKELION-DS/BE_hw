@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect, get_object_or_404
 from .models import Post
+from django.contrib.auth.decorators import login_required
 
 def list(request):
     posts = Post.objects.all().order_by('-id')
@@ -9,6 +10,7 @@ def detail(request, id):
     post = get_object_or_404(Post, id=id)
     return render(request, "blog/detail.html", {'post': post})
 
+@login_required
 def create(request):
     # POST
     if request.method == "POST":

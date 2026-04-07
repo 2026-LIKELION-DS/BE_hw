@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>글 수정</h1>
+        <form action="{% url 'posts:update' post.id %}" method="POST">
+            {% csrf_token %}
+            <p>
+                제목 - <input type="text" name="title" placeholder="글 수정" />
+            </p>
+            <p>
+                내용 -
+                <textarea
+                    name="content"
+                    placeholder="내용을 수정했습니다."
+                ></textarea>
+            </p>
+            <button type="submit">제출</button>
+        </form>
+    </body>
+</html>

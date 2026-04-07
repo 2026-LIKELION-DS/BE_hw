@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>"{{ search }}" - 검색 결과</h1>
+        {% if posts %} {% for post in posts %}
+        <li>
+            <h2>
+                <a href="{% url 'posts:detail' post.id %}">{{ post.title }}</a>
+            </h2>
+            {{post.content}}<br />
+        </li>
+        {% endfor %} {% else %} 검색된 글이 없습니다. {% endif %}
+    </body>
+</html>
