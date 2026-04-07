@@ -1,10 +1,14 @@
 from django.shortcuts import render, redirect
 from .models import Post
 from django.shortcuts import get_object_or_404
+from django.db.models import Q 
+from django.contrib.auth.decorators import login_required
 
 def list(request):
     posts = Post.objects.all().order_by('-id') 
     return render(request, 'blog/list.html', {'posts': posts})
+
+@login_required
 
 def create(request):
     if request.method == 'POST':
@@ -36,3 +40,4 @@ def delate(request, id):
     post = get_object_or_404(Post, id=id)
     post.delete()
     return redirect('blog:list')
+

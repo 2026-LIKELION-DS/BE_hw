@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1> " {{ search_word }} " - 검색 결과</h1>
+
+    {% if posts %}
+        {% for post in posts %}
+            <h2><a href="{% url 'posts:detail' post.id %}">{{ post.title }}</a></h2>
+            <p>{{ post.content }}</p>
+            <hr>
+        {% endfor %}
+    {% else %}
+        <p>검색된 글이 없습니다.</p>
+    {% endif %}
+
+    <br>
+    <a href="{% url 'posts:list' %}">돌아가기</a>
+</body>
+</html>
