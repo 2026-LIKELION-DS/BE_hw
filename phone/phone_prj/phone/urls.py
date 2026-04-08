@@ -1,11 +1,11 @@
 from django.urls import path
 from . import views
-from .views import list, create, detail, update, result, delete
+from .views import list, create, detail, update, result, delete, IndexView
 
 app_name = 'phone'
 
 urlpatterns = [
-    path('', views.list, name = 'list'), 
+    path('', IndexView.as_view(), name = 'list'), 
     path('create/', create, name = 'create'), 
     path('update/<int:id>/', update, name='update'), 
     path('result/', result, name='result'),

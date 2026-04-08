@@ -11,14 +11,10 @@ def create(request):
     if request.method == "POST":
         title = request.POST.get('title')
         content = request.POST.get('content')
-        views = 0
-        created_at = request.POST.get('created_at')
 
         post = Post.objects.create(
             title = title,
             content = content,
-            views = views,
-            created_at = created_at
         )
         return redirect('posts:list')
     return render(request, 'posts/create.html')
@@ -26,8 +22,8 @@ def create(request):
 def detail(request, id):
     post = get_object_or_404(Post, id=id)
 
-    post.views = post.views + 1
-    post.save()
+    post.post_views()
+    
     return render(request, 'posts/detail.html', {'post': post})
 
 def update(request, id):
@@ -48,9 +44,6 @@ def delete(request, id):
 def result(request):
     query = request.GET.get('keyword')
 
-    if query:
-        posts = Post.objects.filter(Q(title__icontains=query) | Q(content__icontains=query)).distinct().order_by('-created_at')
-    else:
-        posts = Post.objects.none()
+    posts = Post.objects.filter(Q(title__icontains=query) | Q(content__icontains=query)).distinct().order_by('-created_at')
 
     return render(request, 'posts/result.html', {'posts': posts, 'keyword':query})

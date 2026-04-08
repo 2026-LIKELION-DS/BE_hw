@@ -1,8 +1,14 @@
 from django.shortcuts import render, redirect
 from .models import Phone
 from django.shortcuts import get_object_or_404
+from django.views.generic import ListView
 
 # Create your views here.
+class IndexView(ListView):
+    queryset = Phone.objects.all().order_by('name')
+    template_name = 'phone/list.html'
+    context_object_name = 'phones'
+
 def list(request):
     phones = Phone.objects.all().order_by('name')
     return render(request, 'phone/list.html', {'phones': phones})
@@ -34,7 +40,7 @@ def update(request, id):
         phone.phone_num = request.POST.get('phone_num')
         phone.email = request.POST.get('email')
         phone.save()
-        return redirect('phone:list')
+        return redirect('phone:list', id)
     return render(request, 'phone/update.html', {'phone':phone})
 
 def result(request):
