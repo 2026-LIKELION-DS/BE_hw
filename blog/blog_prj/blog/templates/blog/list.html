@@ -6,6 +6,17 @@
     <title>Document</title>
 </head>
 <body>
+    {% comment %} 로그인 & 회원가입 {% endcomment %}
+    {% if request.user.is_authenticated %}
+        {{ request.user.username }}님 환영합니다.<br />
+        <a href="{% url 'accounts:logout' %}">로그아웃</a>
+        <a href="{% url 'accounts:mypage' %}">마이페이지</a>
+    {% else %}
+        <a href="{% url 'accounts:login' %}">로그인</a>
+        <a href="{% url 'accounts:signup' %}">회원가입</a>
+    {% endif %}
+    <br />
+
     <!-- 글 작성 -->
     <a href="{% url 'blog:create' %}">글 작성하기</a>
     <hr>
