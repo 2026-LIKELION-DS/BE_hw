@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
 from .models import Post
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required
 
 def list(request):
     posts = Post.objects.all().order_by('-id')
     return render(request, 'blog/list.html', {'posts':posts})
 
+@login_required  #로그인한 사용자만 접근 가능, 미로그인자 접근 시 자동으로 로그인 url로 리다이렉트
 def create(request):
     if request.method == "POST":
         title = request.POST.get('title')
@@ -36,3 +38,4 @@ def update(request, id):
         post.save()
         return redirect('blog:detail', id)
     return render(request, 'blog/update.html', {'post':post})
+
