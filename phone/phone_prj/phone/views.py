@@ -40,7 +40,7 @@ def update(request, id):
         phone.phone_num = request.POST.get('phone_num')
         phone.email = request.POST.get('email')
         phone.save()
-        return redirect('phone:list', id)
+        return redirect('phone:list')
     return render(request, 'phone/update.html', {'phone':phone})
 
 def result(request):
