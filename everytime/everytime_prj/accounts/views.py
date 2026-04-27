@@ -24,7 +24,7 @@ def login(request):
     form = AuthenticationForm(request, request.POST)
     if form.is_valid():
         auth_login(request, form.user_cache)
-        return redirect('accounts:mypage')
+        return redirect('posts:list')
     return render(request, 'accounts/login.html', {'form': form})
 
 def logout(request):
