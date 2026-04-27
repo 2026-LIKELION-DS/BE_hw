@@ -1,12 +1,13 @@
 from django.urls import path
-from .views import list, create, detail, update, delate
+from .views import *
 
 app_name = 'blog'
 
 urlpatterns = [
     path('', list, name='list'),
     path('create/', create, name='create'),
-    path('detail/<int:id>/', detail, name='detail'), # 아이디 값이 경로에서 보임
+    path('detail/<int:id>/', detail, name='detail'), 
     path('update/<int:id>/', update, name='update'),
     path('delete/<int:id>/', delate, name='delete'),
+    path('create-comment/<int:post_id>/', create_comment, name='create-comment'),
 ]

@@ -1,9 +1,21 @@
 from django.db import models
+from users.models import User
 
 class Post(models.Model): # 상속받음
     title = models.CharField(max_length=50)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    author = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name="posts")
 
     def __str__(self):
-        return self.title # 글 제목으로 admin 페이지에서 목록 확인
+        return f'[{self.id}] self.title'
+    
+class Comment(models.Model):
+    post=models.ForeignKey(to=Post, on_delete=models.CASCADE, related_name="comments")
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    author = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name="commnets")
+
+    def __str__(self):
+        return f'[{self.id}] {self.content}'
+    
