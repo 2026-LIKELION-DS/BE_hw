@@ -24,13 +24,13 @@ def login(request):
     form = AuthenticationForm(request, request.POST)
     if form.is_valid():
         auth_login(request, form.user_cache)
-        return redirect('posts:list')
+        return redirect('posts:main')
     return render(request, 'accounts/login.html', {'form': form})
 
 def logout(request):
     if request.user.is_authenticated:
         auth_logout(request)
-    return redirect('posts:list')
+    return redirect('posts:main')
 
 def mypage(request):
     return render(request, 'accounts/mypage.html')
