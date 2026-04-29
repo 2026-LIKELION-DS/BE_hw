@@ -19,7 +19,8 @@ def create(request):
 
         post = Post.objects.create(
             title = title,
-            content = content
+            content = content,
+            author = request.user
         )
         return redirect('everytime:list')
     return render(request, 'everytime/create.html')
