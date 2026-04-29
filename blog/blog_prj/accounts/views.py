@@ -40,4 +40,7 @@ def mypage(request):
 def user_info(request):
     return render(request, 'accounts/user_info.html')
 
+def myblog(request):
+    posts = request.user.posts.filter().order_by('-id')
+    return render(request, 'accounts/myblog.html', {'posts': posts})
 

@@ -1,6 +1,6 @@
 from django.urls import path
 # from .views import *
-from .views import list, create, detail, update, delete
+from .views import list, create, detail, update, delete, create_comment
 
 app_name = 'blog'
 
@@ -10,5 +10,6 @@ urlpatterns = [
     path('detail/<int:id>/', detail, name='detail'),
     path('update/<int:id>/', update, name='update'),
     path('delete/<int:id>/', delete, name='delete'),
+    path('create-comment/<int:post_id>/', create_comment, name='create-comment'),
 ]
 
