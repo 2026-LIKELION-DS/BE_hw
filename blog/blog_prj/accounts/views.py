@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import *
+from blog.models import Post
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
@@ -28,9 +29,11 @@ def login(request):
     return render(request, 'accounts/login.html', {'form': form})
 
 
+from django.contrib.auth import logout as auth_logout
+from django.shortcuts import redirect
+
 def logout(request):
-    if request.user.is_authenticated:
-        auth_logout(request)
+    auth_logout(request)
     return redirect('blog:list')
 
 def mypage(request):
@@ -38,3 +41,7 @@ def mypage(request):
 
 def user_info(request):
     return render(request, 'accounts/user_info.html')
+
+def myblog(request):
+    posts=Post.objects.filter(user=request.user).order_by('-id')
+    return render(request, 'accounts/myblog.html', {'posts':posts})

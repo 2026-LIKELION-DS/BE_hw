@@ -10,11 +10,13 @@
     <form method="POST" action="{% url 'accounts:signup' %}">
       {% csrf_token %}
 
-      <p>아이디 : {{ form.username }} {{ form.username.errors }}</p>
+      <p>학교 : {{ form.university }} {{ form.university }}</p>
 
       <p>이메일 : {{ form.email }} {{ form.email.errors }}</p>
 
       <p>닉네임 : {{ form.nickname }} {{ form.nickname.errors }}</p>
+
+      <p>사용자 이름 : {{ form.username }} {{ form.username.errors }}</p>
 
       <p>비밀번호 : {{ form.password1 }} {{ form.password1.errors }}</p>
 
