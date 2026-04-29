@@ -3,6 +3,7 @@ from  .forms import *
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout #우리가 만든 logout과 겹치지 않게 별칭으로 설정
+from blog.models import Post
 
 def signup(request):
     if request.method == 'GET':
@@ -35,3 +36,8 @@ def user_info(request):
 
 def mypage(request):
     return render(request, 'accounts/mypage.html')
+
+def myblog(request):
+    posts = Post.objects.filter(author=request.user).order_by('-id')
+    #posts = request.user.posts.all().order_by('-id') -> 역참조
+    return render(request, 'accounts/myblog.html', {'posts': posts})

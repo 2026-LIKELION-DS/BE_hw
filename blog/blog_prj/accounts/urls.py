@@ -9,4 +9,5 @@ urlpatterns = [
     path('logout/', logout, name='logout'),
     path('', mypage, name='mypage'),
     path('user-info/', user_info, name='user-info'),
+    path('myblog/', myblog, name='myblog'), #주소로 접속하면 myblog 함수 실행
 ]
