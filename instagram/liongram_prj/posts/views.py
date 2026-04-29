@@ -33,7 +33,7 @@ def update(request, id):
         post.title = request.POST.get('title')
         post.content = request.POST.get('content')
         post.save()
-        return redirect('posts:detail', id=post.id)
+        return redirect('posts:detail', id)
     return render(request, 'posts/update.html', {'post':post})
 
 def delete(request, id):

@@ -12,11 +12,10 @@
         {% for post in posts %}
             <h2><a href="{% url 'posts:detail' post.id %}">{{ post.title }}</a></h2>
             <p>{{ post.content }}</p>
-            <hr>
+            <br>
+        {% empty %}
+        검색된 글이 없습니다.
         {% endfor %}
-    {% else %}
-        <p>검색된 글이 없습니다.</p>
-    {% endif %}
 
     <br>
     <a href="{% url 'posts:list' %}">돌아가기</a>
