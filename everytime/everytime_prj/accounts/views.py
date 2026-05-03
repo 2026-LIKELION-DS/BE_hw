@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
-from  .forms import SignUpForm
+from  .forms import *
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
+from posts.models import Post
 
 def signup(request):
     if request.method == 'GET':
@@ -36,3 +37,7 @@ def logout(request):
     if request.user.is_authenticated:
         auth_logout(request)
     return redirect('posts:main')                     
+
+def mypost(request):
+    posts = Post.objects.filter(author=request.user).order_by("-created_at")
+    return render(request, "accounts/mypost.html", {"posts": posts} )

@@ -12,7 +12,18 @@
     <p> 작성일 - {{ post.created_at}}</p>
     <p> 작성자 - {{ post.author.nickname }}</p>
 
+    {% if post.image %}
+        <img width="320" height="240" src="{{post.image.url}}">
+    {% endif %}
+    {% if post.video %}
+        <video width="320" height="240" controls>
+            <source src="{{ post.video.url }}" type="video/mp4">
+        </video>
+    {% endif %}
+
+
     {% if request.user == post.author %} <!--작성자가 본인일 경우만 수정/삭제 가능-->
+    <br>
     <a href="{% url 'blog:update' post.id %}">수정하기</a><br>
     <a href="{% url 'blog:delete' post.id %}">삭제하기</a>
     {% endif %}
@@ -27,7 +38,7 @@
 
     <form method="post" action="{% url 'blog:create-comment' post.id %}">
         {% csrf_token %}
-        <textarea name="content" cols="30" row="5"></textarea>
+        <textarea name="content" cols="30" rows="5"></textarea>
         <button type="submit">댓글 작성</button><br>
     </form>
 </body>
