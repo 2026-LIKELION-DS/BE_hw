@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>내 글 보기</title>
+</head>
+<body>
+
+    <a href="{% url 'posts:main' %}">메인페이지</a>
+
+        {% for post in posts %}
+
+            {% if post.is_anonymous %}
+            <h2><a href="{% url 'everytime:detail' post.id %}">익명으로 쓴 글</a></h2>
+            {% else %} 
+            <h2><a href="{% url 'everytime:detail' post.id %}">{{ post.author }}(이)가 쓴 글</a></h2>
+            {% endif %}
+    
+            <p>{{ post.title }}</p>
+
+            <p>{{ post.content }}</p>
+
+            <p>작성일 - {{ post.created_at }}</p>
+
+            <p>작성자 - {{ post.author }}</p>
+        
+        <hr> {% empty %}
+        <p>작성한 글이 없습니다.</p>
+    {% endfor %}
+
+</body>
+</html>

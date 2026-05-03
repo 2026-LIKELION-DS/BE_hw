@@ -9,26 +9,39 @@
     {% if request.user.is_authenticated %}
       nickname : {{ request.user.nickname }}<br />
 
+      <a href="{% url 'accounts:mypage' %}">마이페이지</a>
       <form action="{% url 'accounts:logout' %}" method="POST">
         {% csrf_token %}
         <a href="{% url 'accounts:login' %}">로그아웃</a>
       </form>
-      <a href="{% url 'accounts:mypage' %}">마이페이지</a>
+      
 
-      <br /><br />
+      <hr>
 
-      <a href="{% url 'everytime:create' %}">글 작성하기</a>
-      <hr />
+    <form action="{% url 'posts:main' %}" method="POST">
+      {% csrf_token %}
+      제목 - <input type="text" name="title"><br><br>
+      내용 - <textarea name="content"></textarea><br><br>
+      <input type="checkbox" name="anonymous" id="anonymous_check">
+      <label for="anonymous_check">익명</label><br><br>
+      <input type="submit" value="작성하기">
+</form>
 
-      {% for post in posts %}
+<hr>
+
+{% for post in posts %}
         <h2>
           <a href="{% url 'everytime:detail' post.id %}">{{ post.title }}</a>
         </h2>
-        <p>{{ post.content }}</p>
+        
+        {% if post.is_anonymous %} 익명으로 쓴 글
+        {% else %} {{ post.author }}(이)가 쓴 글 
+        {% endif %} <p>{{ post.content }}</p>
         <p>{{ post.created_at }}</p>
-      {% empty %}
+      {% empty %} <hr>
         작성된 글이 없습니다.
-      {% endfor %}
+      {% endfor %} <hr>
+
 
     {% else %}
       <a href="{% url 'accounts:login' %}">로그인</a>

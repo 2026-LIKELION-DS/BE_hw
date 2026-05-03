@@ -1,0 +1,6 @@
+{
+  "python.defaultInterpreterPath": "/Users/baeseoyeon/Desktop/BE_hw/everytime/myvenv/bin/python",
+  "python.analysis.extraPaths": [
+    "/Users/baeseoyeon/Desktop/BE_hw/everytime/myvenv/lib/python3.14/site-packages"
+  ]
+}
