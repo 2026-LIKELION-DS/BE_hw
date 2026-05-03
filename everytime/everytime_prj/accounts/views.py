@@ -3,6 +3,7 @@ from .forms import *
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
+from posts.models import Post
 
 
 def signup(request):
@@ -32,8 +33,18 @@ def logout(request):
     return redirect('posts:main')
 
 def mypage(request):
+    if not request.user.is_authenticated:
+        return redirect('accounts:login')
     return render(request, 'accounts/mypage.html')
 
 def user_info(request):
     return render(request, 'accounts/user_info.html')
 
+def mypost(request):
+    if not request.user.is_authenticated:
+        return redirect('accounts:login')
+    
+    # 내가 작성한 모든 글을 최신순으로 가져옴
+    my_posts = Post.objects.filter(author=request.user).order_by('-created_at')
+    
+    return render(request, 'accounts/mypost.html', {'my_posts': my_posts})

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- posts/templates/posts/update.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>글 수정</title>
+</head>
+<body>
+    <h2>글 수정</h2>
+    
+    <form method="POST">
+        {% csrf_token %}
+        <label>제목 - </label>
+        <input type="text" name="title" value="{{ post.title }}" required><br><br>
+        
+        <label>내용 - </label><br>
+        <textarea name="content" rows="5" required>{{ post.content }}</textarea><br><br>
+        
+        <!-- 2. 익명 여부에 따라 체크 상태 유지 -->
+        <input type="checkbox" name="is_anoymouse" id="anon" {% if post.is_anoymouse %}checked{% endif %}>
+        <label for="anon">익명</label>
+        
+        <button type="submit">수정하기</button>
+    </form>
+</body>
+</html>
+</body>
+</html>
