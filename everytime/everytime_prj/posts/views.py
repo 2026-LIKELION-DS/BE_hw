@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
-from .models import Post
+from .models import Post, Comment
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def main(request):
-    return render(request, 'posts/main.html')
+    posts = Post.objects.all().order_by('-created_at')
+    return render(request, 'posts/main.html', {'posts': posts})
 
 def list(request):
     posts = Post.objects.all().order_by('-id')
@@ -16,19 +17,36 @@ def create(request):
     if request.method == 'POST':
         title = request.POST.get('title')
         content = request.POST.get('content')
+        is_anonymous = request.POST.get('is_anonymous') == 'on'
 
-        post = Post.objects.create(
+        posts = Post.objects.create(
             title = title,
             content = content,
-            author = request.user
+            author = request.user,
+            is_anonymous = is_anonymous
         )
-        return redirect('everytime:list')
-    return render(request, 'everytime/create.html')
+        return redirect('posts:main')
+    posts = Post.objects.all().order_by('-created_at')
+    return render(request, 'posts/main.html', {'posts': posts})
 
 def detail(request, id):
     post = get_object_or_404(Post, id=id)
-    return render(request, 'everytime/detail.html', {'post':post})
+    comments = post.comments.all().order_by('created_at')
 
+    if request.method == 'POST':
+        content = request.POST.get('content')
+        is_anonymous = request.POST.get('is_anonymous') == 'on'
+
+        Comment.objects.create(
+            post = post,
+            content = content, 
+            author = request.user,
+            is_anonymous = is_anonymous
+        )
+        return redirect('posts:detail', id)
+    return render(request, 'posts/detail.html', {'post':post, 'comments': comments})
+
+@login_required
 def update(request, id):
     post = get_object_or_404(Post, id=id)
 
@@ -36,10 +54,20 @@ def update(request, id):
         post.title = request.POST.get('title')
         post.content = request.POST.get('content')
         post.save()
-        return redirect('everytime:detail', id)
-    return render(request, 'everytime/update.html', {'post':post})
+        return redirect('posts:detail', id)
+    return render(request, 'posts/update.html', {'post':post})
 
+@login_required
 def delete(request, id):
     post = get_object_or_404(Post, id=id)
     post.delete()
     return redirect('everytime:list')
+
+@login_required
+def comment_delete(request, id):
+    comment = get_object_or_404(Comment, id=id)
+    post_id = comment.post.id
+
+    if request.user == comment.author:
+        comment.delete()
+    return redirect('posts:detail', post_id)
