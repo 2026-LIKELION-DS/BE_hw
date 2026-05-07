@@ -1,8 +1,13 @@
 from django.db import models
 from users.models import User
+import os
+from uuid import uuid4
+from django.utils import timezone
 
 def upload_filepath(instance, filename):
-    return f'posts/{instance.__class__.__name__}/{filename}'
+    today_str = timezone.now().strftime("%Y%m%d")
+    file_basename = os.path.basename(filename)
+    return f'{instance._meta.model_name}/{today_str}/{str(uuid4())}_{file_basename}'
 
 class Category(models.Model):
     name = models.CharField(max_length=20, unique=True)
