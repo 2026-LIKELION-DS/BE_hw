@@ -4,6 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
+from posts.models import Post
 
 
 def signup(request):
@@ -38,3 +39,9 @@ def mypage(request):
 
 def user_info(request):
     return render(request, 'accounts/user_info.html')
+
+@login_required
+def mypost(request):
+    posts = Post.objects.filter(author=request.user).order_by('-id')
+
+    return render(request, 'accounts/mypost.html', {'posts': posts})

@@ -1,5 +1,81 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required
+
+
+from .models import *
 
 
 def main(request):
-    return render(request, 'posts/main.html' )
+    posts=Post.objects.all().order_by('-id')
+
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        is_anonymouse = request.POST.get('is_anonymouse') == 'on'
+        post = Post.objects.create(
+            title = title,
+            content = content,
+            author = request.user,
+            is_anonymouse = is_anonymouse
+        )
+        return redirect('posts:main')
+
+    
+    return render(request, 'posts/main.html', {'posts':posts})
+
+
+def detail(request, id):
+    post = get_object_or_404(Post, id=id)
+    comments = post.comments.all().order_by('id')
+    return render(request, 'posts/detail.html', {'post':post, 'comments':comments})
+
+
+@login_required
+def create_comment(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if request.method =='POST':
+        content = request.POST.get('content')
+        is_anonymouse = request.POST.get('is_anonymouse') == 'on'
+
+        Comment.objects.create(
+            post=post,
+            content=content,
+            author=request.user,
+            is_anonymouse = is_anonymouse
+        )
+        return redirect('posts:detail', post_id)
+    return redirect('posts:main')
+
+
+def delete(request, id):
+    post=get_object_or_404(Post, id=id)
+    if request.user == post.author:
+        post.delete()
+    return redirect('posts:main')
+
+@login_required
+def delete_comment(request, id):
+    comment = get_object_or_404(Comment, id=id)
+    post_id = comment.post.id
+
+    if request.user == comment.author:
+        comment.delete()
+
+    return redirect('posts:detail', post_id)
+
+@login_required
+def update(request, id):
+    post = get_object_or_404(Post, id=id)
+
+    if request.user != post.author:
+        return redirect('posts:detail', id)
+
+    if request.method == 'POST':
+        post.title = request.POST.get('title')
+        post.content = request.POST.get('content')
+        post.is_anonymouse = request.POST.get('is_anonymouse') == 'on'
+        post.save()
+        return redirect('posts:detail', id)
+
+    return render(request, 'posts/update.html', {'post': post})

@@ -10,11 +10,25 @@
     nickname : {{request.user.nickname}} <Br>
     <a href = "{% url 'accounts:mypage' %}">마이페이지</a> <br>
     <a href = "{% url 'accounts:logout' %}">로그아웃</a>
+
+    <form method = 'POST'>
+    {% csrf_token %}
+    <input type = "text" name = "title" placeholder="제목 입력"> <Br>
+    <textarea name = "content" placeholder="본문 입력"></textarea> <br>
+    <input type ="checkbox" name = "is_anonymouse"> 익명
+    <button type = "submit">작성 완료 </button>
+    </form>
+
     {% else %}
     <a href = "{% url 'accounts:login' %}">로그인</a><Br>
     <a href = "{% url 'accounts:signup' %}">회원가입</a>
-    
     {% endif %}
+
+    {% for post in posts %}
+    <h2><a href="{% url 'posts:detail' post.id %}">{{ post.title }}</a></h2>
+    <p>{{post.content}}</p>
+    <p>{{post.created_at}}</p>
+    {% endfor %}
 
 
 </body>
