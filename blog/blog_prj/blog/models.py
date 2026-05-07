@@ -9,6 +9,12 @@ def upload_filepath(instance, filename):
     file_basename = os.path.basename(filename)
     return f'{instance._meta.model_name}/{today_str}/{str(uuid4())}_{file_basename}'
 
+class Category(models.Model):
+    name = models.CharField(max_length=20, unique=True)
+
+    def __str__(self):
+        return self.name
+
 class Post(models.Model):
     title = models.CharField(max_length = 50) #50자 제한
     content = models.TextField()
@@ -16,10 +22,21 @@ class Post(models.Model):
     author = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name="posts") #게시글을 하나의 작성자에 연결
     image = models.ImageField(upload_to=upload_filepath, blank=True)
     video = models.FileField(upload_to=upload_filepath, blank=True)
+    category = models.ManyToManyField(to=Category, through="PostCategory", related_name="posts")
+    like = models.ManyToManyField(to=User, through="Like", related_name="like_posts")
 
     def __str__(self):
         return f'[{self.id}] self.title' #게시글 출력 시 ID와 제목 함께 반환
     
+class Like(models.Model):
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name="user_likes")
+    post = models.ForeignKey(to=Post, on_delete=models.CASCADE, related_name="post_likes")
+
+#중간 테이블 PostCategory 생성
+class PostCategory(models.Model):
+    post = models.ForeignKey(to=Post, on_delete=models.CASCADE, related_name="post_categories")
+    category = models.ForeignKey(to=Category, on_delete=models.CASCADE, related_name="post_categories")
+
 
 class Comment(models.Model):
     post = models.ForeignKey(to=Post, on_delete=models.CASCADE, related_name="comments") #댓글을 하나의 post에 연결
@@ -29,3 +46,4 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'[{self.id}] {self.content}' #댓글 출력 시 ID와 내용 함께 반환
+    
