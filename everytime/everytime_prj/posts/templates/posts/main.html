@@ -1,18 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>에브리타임</title>
 </head>
 <body>
-    {% if request.user.is_authenticated %}
-    <p>nickname : {{ request.user.username }}</p>
-    <a href="{% url 'accounts:mypage' %}">마이페이지</a>
-    <a href="{% url 'accounts:logout' %}">로그아웃</a> 
-    {% else %}
-    <a href="{% url 'accounts:login' %}">로그인</a>
-    <a href="{% url 'accounts:signup' %}">회원가입</a>
-    {% endif %}
+    <div>
+        {% if user.is_authenticated %}
+            <p>nickname : {{ user.username }}</p>
+            <a href="{% url 'accounts:mypage' %}">마이페이지</a> 
+            <a href="{% url 'accounts:logout' %}">로그아웃</a>
+            <hr>
+            <form method="POST">
+                {% csrf_token %}
+                <input type="text" name="title" placeholder="제목 입력" required><br>
+                <textarea name="content" placeholder="본문 입력" required></textarea><br>
+                <input type="checkbox" name="is_anoymouse" id="anon"> 
+                <label for="anon">익명</label>
+                <button type="submit">작성 완료</button>
+            </form>
+        {% else %}
+            <a href="{% url 'accounts:login' %}">로그인</a>
+            <a href="{% url 'accounts:signup' %}">회원가입</a>
+        {% endif %}
+    </div>
+
+    <hr>
+
+    <div>
+        {% for post in posts %}
+        <div>
+            <h3>{% if post.is_anoymouse %} 익명으로 쓴 글 {% else %} {{ post.author.username }}가 쓴 글 {% endif %}</h3>
+            <a href="{% url 'posts:detail' id=post.id %}">
+                <p><strong>{{ post.title }}</strong></p>
+            </a>
+            <p>{{ post.content }}</p>
+            <small>{{ post.created_at }}</small>
+            <hr>
+        </div>
+        {% empty %}
+            <p>작성된 글이 없습니다.</p>
+        {% endfor %}
+    </div>
 </body>
 </html>
