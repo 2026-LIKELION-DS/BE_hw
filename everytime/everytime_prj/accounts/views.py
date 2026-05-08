@@ -40,3 +40,9 @@ def mypage(request):
 @login_required
 def user_info(request):
     return render(request, 'accounts/user_info.html')
+
+@login_required
+def mypost(request):
+    posts = request.user.posts.all().order_by('-created_at')
+    
+    return render(request, 'accounts/mypost.html',{'posts':posts})
