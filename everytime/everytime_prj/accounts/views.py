@@ -3,6 +3,8 @@ from .forms import *
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
+from posts.models import Post
+from django.contrib.auth.decorators import login_required
 
 def signup(request):
     if request.method == 'GET':
@@ -33,8 +35,15 @@ def logout(request):
         auth_logout(request)
     return redirect('posts:main')
 
+@login_required
 def mypage(request):
     return render(request, 'accounts/mypage.html')
 
+@login_required
 def user_info(request):
     return render(request, 'accounts/user-info.html')
+
+@login_required
+def mypost(request):
+    posts = Post.objects.filter(author=request.user).order_by('-created_at')
+    return render(request, 'accounts/mypost.html', {'posts': posts})

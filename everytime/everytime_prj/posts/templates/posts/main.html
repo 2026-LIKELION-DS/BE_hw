@@ -6,19 +6,41 @@
         <title>Document</title>
     </head>
     <body>
-        <br /><br />
+        {% if request.user.is_authenticated %} 
         <p>
-            {% if request.user.is_authenticated %} nickname :
-            {{request.user.nickname}}
+            nickname : {{request.user.nickname}}
         </p>
 
         <a href="{% url 'accounts:mypage' %}">마이페이지</a>
         <a href="{% url 'accounts:logout' %}">로그아웃</a>
+        <hr>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="title" placeholder="제목 입력" required />
+            <br />
+            <textarea name="content" placeholder="본문 입력" required></textarea>
+            <br />
+            <label>
+                <input type="checkbox" name="is_anonymous" />
+                익명
+            </label>
+            <button type="submit">작성 완료</button>
+        </form>
 
         {% else %}
         <a href="{% url 'accounts:login' %}">로그인</a>
         <a href="{% url 'accounts:signup' %}">회원가입</a>
         {% endif %}
+
+        {% for post in posts %}
+            <a href="{% url 'posts:detail' post.id %}">
+                <h2>{{post.title}}</h2>
+            </a>
+            <p>{{post.content}}</p>
+            <p>{{post.created_at}}</p>
+            <hr />
+        {% endfor %}
+
         <hr />
     </body>
 </html>

@@ -4,6 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm
 #겹치지 않게
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
+from .models import Post
 
 
 def signup(request):
@@ -41,6 +42,10 @@ def user_info(request):
     return render(request, 'accounts/user_info.html')
 
 def myblog(request):
-    posts = request.user.posts.filter().order_by('-id')
+    posts = Post.objects.filter(author=request.user).order_by('-id')
     return render(request, 'accounts/myblog.html', {'posts': posts})
+
+def mylike(request):
+    liked_posts = Post.objects.filter(post_likes__user=request.user).order_by('-id')
+    return render(request, 'accounts/mylike.html', {'liked_posts': liked_posts})  
 
