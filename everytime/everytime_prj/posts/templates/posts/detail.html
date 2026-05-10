@@ -11,10 +11,12 @@
     <a href="{% url 'accounts:logout' %}">로그아웃</a>
     <hr>
 
-    <h2>{% if post.is_anoymouse %} 익명으로 쓴 글 {% else %} {{ post.author.username }}가 쓴 글 {% endif %}</h2>
+    <h2>{% if post.is_anonymous %} 익명으로 쓴 글 {% else %} {{ post.author.username }}가 쓴 글 {% endif %}</h2>
+    
     <p><strong>{{ post.title }}</strong></p>
     <p>{{ post.content }}</p>
-    <small>{{ post.created_at }}</small>
+    <small>{{ post.created_at }}</small><br>
+    <small>{% if post.is_anonymous %}익명{% endif %}</small>
 
     {% if user == post.author %}
     <div>
@@ -23,33 +25,46 @@
     </div>
     {% endif %}
 
+    <div style="margin-top: 10px;">
+        <p>공감 {{ post.like.count }}개 | 스크랩 {{ post.scrap.count }}개</p>
+        
+        {% if is_liked %}
+            <a href="{% url 'posts:post_like' post.id %}"><button>공감 취소</button></a>
+        {% else %}
+            <a href="{% url 'posts:post_like' post.id %}"><button>공감</button></a>
+        {% endif %}
+
+        {% if is_scrapped %}
+            <a href="{% url 'posts:post_scrap' post.id %}"><button>스크랩 취소</button></a>
+        {% else %}
+            <a href="{% url 'posts:post_scrap' post.id %}"><button>스크랩</button></a>
+        {% endif %}
+    </div>
+
     <hr>
     <h4>댓글</h4>
-<div>
-    {% for comment in comments %}
-        <div>
-            {% if comment.is_anoymouse %} 익명 {% else %} {{ comment.author.username }} {% endif %} : 
-            
-            {{ comment.content }} 
-            
-            {{ comment.created_at }}
-            
-            {% if user == comment.author %}
-                <a href="{% url 'posts:comment_delete' com_id=comment.id %}">삭제하기</a>
-            {% endif %}
-        </div>
-    {% empty %}
-        등록된 댓글이 없습니다.
-    {% endfor %}
-</div>
+    <div>
+        {% for comment in comments %}
+                <strong>{% if comment.is_anonymous %} 익명 {% else %} {{ comment.author.username }} {% endif %}</strong> : 
+                {{ comment.content }} 
+                <small>{{ comment.created_at }}</small>
+                
+                {% if user == comment.author %}
+                    <a href="{% url 'posts:comment_delete' com_id=comment.id %}" style="font-size: 0.8em; color: red;">삭제하기</a>
+                {% endif %}
+            </div>
+        {% empty %}
+            <p>댓글이 없습니다.</p>
+        {% endfor %}
+    </div>
 
     <hr>
     <form action="{% url 'posts:comment_create' id=post.id %}" method="POST">
         {% csrf_token %}
-        <input type="text" name="content" placeholder="댓글을 입력하세요" required style="width: 70%;">
-        <input type="checkbox" name="is_anoymouse" id="c_anon">
-        <label for="c_anon">익명</label>
+        <input type="text" name="content" placeholder="댓글" required style="width: 60%;">
         <button type="submit">작성</button>
+        <input type="checkbox" name="is_anonymous" id="c_anon">
+        <label for="c_anon">익명</label>
     </form>
 </body>
 </html>

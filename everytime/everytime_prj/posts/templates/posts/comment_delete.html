@@ -11,7 +11,7 @@
 <div>
     {% for comment in comments %}
     <div>
-        {% if comment.is_anoymouse %} 익명 {% else %} {{ comment.author.username }} {% endif %} : 
+        {% if comment.is_anonymous %} 익명 {% else %} {{ comment.author.username }} {% endif %} : 
         
         {{ comment.content }} 
         
