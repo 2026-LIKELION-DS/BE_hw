@@ -34,6 +34,28 @@
         {% csrf_token %}
         <button type="submit">삭제하기</button>
     </form>
+    {% endif %}
+    
+    <p>공감 {{ post.likes.count }} | 스크랩 {{ post.scraps.count }}</p>
+
+    {% if user.is_authenticated %}
+    <form method="POST" action="{% url 'posts:like' post.id %}" style="display:inline;">
+        {% csrf_token %}
+        {% if user in post.likes.all %}
+            <button type="submit">공감 취소</button>
+        {% else %}
+            <button type="submit">공감</button>
+        {% endif %}
+    </form>
+
+    <form method="POST" action="{% url 'posts:scrap' post.id %}" style="display:inline;">
+        {% csrf_token %}
+        {% if user in post.scraps.all %}
+            <button type="submit">스크랩 취소</button>
+        {% else %}
+            <button type="submit">스크랩</button>
+        {% endif %}
+    </form>
 {% endif %}
 
 <hr>

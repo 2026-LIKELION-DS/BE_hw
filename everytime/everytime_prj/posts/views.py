@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Post, Comment
+from .models import Post, Comment, Category
 from django.contrib.auth.decorators import login_required
 
 
 def main(request):
     posts = Post.objects.all().order_by("-created_at")
-    return render(request, "posts/main.html", {"posts": posts})
+    categories = Category.objects.all()
+
+    return render(request, "posts/main.html", {
+        "posts": posts, "categories": categories })
 
 
 @login_required
@@ -57,7 +60,7 @@ def create_comment(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     if request.method == 'POST':
         content = request.POST.get('content')
-        is_anonymous = request.POST.get('is_anonymous')=='on'
+        is_anonymous = request.POST.get('is_anonymous') == 'on'
 
         Comment.objects.create(
             post = post,
@@ -78,3 +81,41 @@ def comment_delete(request, id):
         return redirect("posts:detail", id=post_id)
 
     return redirect("posts:main")
+
+
+def category(request, slug):
+    category = get_object_or_404(Category, slug=slug)
+
+    posts = category.posts.all()
+
+    return render(request, 'posts/category.html', {
+        'category': category,
+        'posts': posts,
+    })
+
+def like(request, id):
+    post = get_object_or_404(Post, id=id)
+
+    if request.user in post.likes.all():
+        post.likes.remove(request.user)
+    else:
+        post.likes.add(request.user)
+
+    return redirect('posts:detail', id)
+
+
+def scrap(request, id):
+    post = get_object_or_404(Post, id=id)
+
+    if request.user in post.scraps.all():
+        post.scraps.remove(request.user)
+    else:
+        post.scraps.add(request.user)
+
+    return redirect('posts:detail', id)
+
+@login_required
+def scrap_posts(request):
+    posts = request.user.scrapped_posts.all().order_by('-created_at')
+    return render(request, 'posts/scrap_posts.html', {
+        'posts': posts, })

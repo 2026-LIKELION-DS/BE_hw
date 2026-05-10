@@ -4,6 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from posts.models import Post
+from django.contrib.auth.decorators import login_required
 
 def signup(request):
     if request.method == 'GET':
@@ -41,3 +42,12 @@ def logout(request):
 def mypost(request):
     posts = Post.objects.filter(author=request.user).order_by("-created_at")
     return render(request, "accounts/mypost.html", {"posts": posts} )
+
+
+@login_required
+def myscrap(request):
+    posts = request.user.scrapped_posts.all()
+
+    return render(request, 'accounts/myscrap.html', {
+        'posts': posts,
+    })

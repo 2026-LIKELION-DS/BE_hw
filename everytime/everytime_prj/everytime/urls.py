@@ -5,4 +5,5 @@ app_name = 'everytime'
 
 urlpatterns = [
     path('', views.main, name='main'), 
+    path('category/<slug:slug>/', views.category, name='category'),
 ]
