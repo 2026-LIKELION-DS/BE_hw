@@ -1,19 +1,24 @@
 from django.shortcuts import render, redirect
-from .models import Post, Comment
+from .models import Post, Comment, Category
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def main(request):
-    posts = Post.objects.all().order_by('-created_at')
-    return render(request, 'posts/main.html', {'posts': posts})
+    secret_posts = Post.objects.filter(category__slug='secret').order_by('-created_at')[:4]
+    freshman_posts = Post.objects.filter(category__slug='freshman').order_by('-created_at')[:4]
+    free_posts = Post.objects.filter(category__slug='free').order_by('-created_at')[:4]
+
+    return render(request, 'posts/main.html', {'secret_posts': secret_posts, 'freshman_posts': freshman_posts, 'free_posts': free_posts})
 
 def list(request):
     posts = Post.objects.all().order_by('-id')
     return render(request, 'everytime/list.html', {'posts': posts})
 
 @login_required
-def create(request):
+def create(request, slug):
+    category = Category.objects.get(slug=slug)
+
     if request.method == 'POST':
         title = request.POST.get('title')
         content = request.POST.get('content')
@@ -23,11 +28,12 @@ def create(request):
             title = title,
             content = content,
             author = request.user,
-            is_anonymous = is_anonymous
+            is_anonymous = is_anonymous,
+            category = category
         )
-        return redirect('posts:main')
-    posts = Post.objects.all().order_by('-created_at')
-    return render(request, 'posts/main.html', {'posts': posts})
+        return redirect('posts:category', slug=slug)
+    posts = Post.objects.filter(category=category).order_by('-created_at')
+    return render(request, 'posts/category.html', {'category':category, 'posts': posts})
 
 def detail(request, id):
     post = get_object_or_404(Post, id=id)
@@ -70,4 +76,30 @@ def comment_delete(request, id):
 
     if request.user == comment.author:
         comment.delete()
+    return redirect('posts:detail', post_id)
+
+def category(request, slug):
+    category = Category.objects.get(slug=slug)
+    posts = Post.objects.filter(category=category).order_by('-created_at')
+
+    return render(request, 'posts/category.html', {'category':category, 'posts':posts})
+
+def like(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    user = request.user
+
+    if user in post.like.all():
+        post.like.remove(user)
+    else:
+        post.like.add(user)
+    return redirect('posts:detail', post_id)
+
+def scrap(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    user = request.user
+
+    if user in post.scrap.all():
+        post.scrap.remove(user)
+    else:
+        post.scrap.add(user)
     return redirect('posts:detail', post_id)
