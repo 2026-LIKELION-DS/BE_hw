@@ -1,9 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link href="{% static 'css/example.css' %}" rel="stylesheet" />
 </head>
 <body>
     {% load humanize %}
@@ -13,16 +15,19 @@
         <a href="{% url 'accounts:logout' %}">로그아웃</a>
         <hr>
 
-        <form method="POST" action="{% url 'posts:create' category.slug %}">
+        <form method="POST" action="{% url 'posts:create' category.slug %}" enctype="multipart/form-data">
             {% csrf_token %}
             <h2>{{ category.name }}</h2>
             <input type="text" name="title" placeholder="제목 입력"><br>
             <textarea name="content" placeholder="본문 입력"></textarea><br>
+            이미지 <input type="file" name="image" /><br /><br />
+            동영상 <input type="file" name="video" /><br /><br />
             <label>
                 <input type="checkbox" name="is_anonymous">익명
             </label>
             <button type="submit">작성 완료</button>
         </form>
+        <hr>
 
         
     {% else %}
@@ -36,6 +41,14 @@
         </a>
         <p>{{ post.content }}</p>
         <p>{{ post.created_at|naturaltime }}</p>
+        {% if post.is_anonymous %}
+            익명
+        {% else %}
+            {{ post.author.username }}
+        {% endif %}
+        <br>
+        댓글{{ post.comments.count }} 좋아요{{ post.like.count }}
+
         <hr>
     {% endfor %}
 </body>
