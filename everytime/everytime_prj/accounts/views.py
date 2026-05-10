@@ -3,7 +3,7 @@ from .forms import *
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
-from everytime.models import Post
+from posts.models import Post
 
 def signup(request):
     if request.method == 'GET':
@@ -41,3 +41,7 @@ def user_info(request):
 def mypost(request):
     posts = Post.objects.filter(author=request.user.nickname)
     return render(request, 'accounts/mypost.html', {'posts': posts})
+
+def myscrap(request):
+    scraped_posts = request.user.scrap_posts.all().order_by('-id')
+    return render(request, 'accounts/myscrap.html', {'scraped_posts':scraped_posts})

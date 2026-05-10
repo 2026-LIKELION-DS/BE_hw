@@ -1,51 +1,43 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    {% if request.user.is_authenticated %}
-      nickname : {{ request.user.nickname }}<br />
+<head>
+    <meta charset="UTF-8">
+    <title>Everytime Main</title>
+</head>
+<body>
 
-      <a href="{% url 'accounts:mypage' %}">마이페이지</a>
-      <form action="{% url 'accounts:logout' %}" method="POST">
-        {% csrf_token %}
-        <a href="{% url 'accounts:login' %}">로그아웃</a>
-      </form>
-      
+<p>
+    {% for category in categories %}
+        <a href="{% url 'posts:category_detail' category.slug %}">{{ category.name }}</a>
+    {% endfor %}
+</p>
 
-      <hr>
 
-    <form action="{% url 'posts:main' %}" method="POST">
-      {% csrf_token %}
-      제목 - <input type="text" name="title"><br><br>
-      내용 - <textarea name="content"></textarea><br><br>
-      <input type="checkbox" name="anonymous" id="anonymous_check">
-      <label for="anonymous_check">익명</label><br><br>
-      <input type="submit" value="작성하기">
-</form>
+{% if request.user.is_authenticated %}
+    <p>nickname : {{ request.user.nickname }}</p>
+    <p>
+        <a href="{% url 'accounts:mypage' %}">마이페이지</a>
+        <form action="{% url 'accounts:logout' %}" method="POST">
+            {% csrf_token %}
+            <button type="submit">로그아웃</button>
+        </form>
+    </p>
+{% endif %}
 
 <hr>
 
-{% for post in posts %}
-        <h2>
-          <a href="{% url 'everytime:detail' post.id %}">{{ post.title }}</a>
-        </h2>
-        
-        {% if post.is_anonymous %} 익명으로 쓴 글
-        {% else %} {{ post.author }}(이)가 쓴 글 
-        {% endif %} <p>{{ post.content }}</p>
-        <p>{{ post.created_at }}</p>
-      {% empty %} <hr>
-        작성된 글이 없습니다.
-      {% endfor %} <hr>
+{% for category in categories %}
+    <h2><a href="{% url 'posts:category_detail' category.slug %}">{{ category.name }}</a></h2>
 
+    {% for pc in category.post_categories.all|dictsortreversed:"id"|slice:":4" %}
+        <p>
+            <a href="{% url 'posts:detail' pc.posts.id %}">{{ pc.posts.title }}</a>
+        </p>
+    {% empty %}
+        <p>글이 없습니다.</p>
+    {% endfor %}
+    <br>
+{% endfor %}
 
-    {% else %}
-      <a href="{% url 'accounts:login' %}">로그인</a>
-      <a href="{% url 'accounts:signup' %}">회원가입</a>
-    {% endif %}
-  </body>
+</body>
 </html>

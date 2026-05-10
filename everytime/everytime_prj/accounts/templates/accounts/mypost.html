@@ -11,9 +11,9 @@
         {% for post in posts %}
 
             {% if post.is_anonymous %}
-            <h2><a href="{% url 'everytime:detail' post.id %}">익명으로 쓴 글</a></h2>
+            <h2><a href="{% url 'posts:detail' post.id %}">익명으로 쓴 글</a></h2>
             {% else %} 
-            <h2><a href="{% url 'everytime:detail' post.id %}">{{ post.author }}(이)가 쓴 글</a></h2>
+            <h2><a href="{% url 'posts:detail' post.id %}">{{ post.author }}(이)가 쓴 글</a></h2>
             {% endif %}
     
             <p>{{ post.title }}</p>

@@ -1,0 +1,53 @@
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ category.name }}</title>
+</head>
+<body>
+
+    <p>
+        <a href="{% url 'posts:main' %}">메인페이지로 돌아가기</a>
+    </p>
+
+    <p>nickname : {{ request.user.nickname }} </p>
+    <a href="{% url 'accounts:mypage' %}">마이페이지</a>
+    <a href="{% url 'accounts:logout' %}">로그아웃</a>
+
+    <hr>
+
+    <p>{{ category.name }}</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <p>제목 - <input type="text" name="title" required></p>
+        <p>내용 - <textarea name="content" required></textarea></p>
+        <p>이미지 - <input type="file" name="image" accept="image/*"></p>
+        <p>동영상 - <input type="file" name="video" accept="video/*"></p>
+        <p>
+            <input type="checkbox" name="anonymous" id="id_anonymous">
+            <label for="id_anonymous">익명</label>
+        </p>
+        <button type="submit">작성하기</button>
+    </form>
+
+    <hr>
+
+    {% for post in posts %}
+        <p>
+            <a href="{% url 'posts:detail' post.id %}">{{ post.title }}</a>
+        </p>
+        <p>{{ post.content }}</p>
+        <p>
+            {{ post.created_at|naturaltime }} | 
+            {% if post.is_anonymous %}익명{% else %}{{ post.author }}{% endif %}
+        </p>
+        <hr>
+    {% empty %}
+        <p>작성된 글이 없습니다.</p>
+    {% endfor %}
+
+</body>
+</html>
