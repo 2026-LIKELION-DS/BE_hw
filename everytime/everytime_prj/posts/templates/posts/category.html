@@ -1,0 +1,44 @@
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <a href="{% url 'posts:main' %}"> 메인 페이지로 돌아가기</a><br>
+    {% if request.user.is_authenticated %}
+        nickname : {{ request.user.nickname }}<br />
+        <a href="{% url 'accounts:mypage' %}">마이페이지</a>
+        <a href="{% url 'accounts:logout' %}">로그아웃</a><br><hr>
+
+        <h2>{{ category.name }}</h2>
+        <form method="POST" action="{% url 'posts:create' category.slug %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="text" name="title" placeholder="제목 입력"><br>
+            <textarea name="content" placeholder="본문 입력"></textarea>
+            <br><br>
+            이미지 <input type="file" name="image"><br>
+            동영상 <input type="file" name="video"><br>
+        
+            <label><input type="checkbox" name="is_anonymous">익명</label> 
+            <button type="submit">작성 완료</button>
+        </form>
+        
+    {% else %}
+        <a href="{% url 'accounts:login' %}">로그인</a>
+        <a href="{% url 'accounts:signup' %}">회원가입</a>
+    {% endif %}
+    <hr>
+
+    {% for post in posts %}
+        <h2><a href="{% url 'posts:detail' post.id %}">{{ post.title }}</a></h2>
+        <p>{{post.content}}</p>
+        <p>{{post.created_at|naturaltime }}</p>
+        <p>댓글 {{post.comments.count}} 공감 {{ post.like.count }}<hr>
+    {% empty %}
+        작성된 글이 없습니다.
+    {% endfor %} 
+</body>
+</html>

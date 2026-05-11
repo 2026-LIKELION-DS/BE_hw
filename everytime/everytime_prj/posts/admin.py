@@ -4,3 +4,7 @@ from .models import *
 # Register your models here.
 admin.site.register(Post)
 admin.site.register(Comment)
+admin.site.register(Category)
+admin.site.register(PostCategory)
+admin.site.register(Like)
+admin.site.register(Scrap)

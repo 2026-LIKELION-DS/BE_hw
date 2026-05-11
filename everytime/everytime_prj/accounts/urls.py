@@ -9,5 +9,6 @@ urlpatterns = [
     path('logout/',logout,name='logout'),
     path('mypage/', mypage,name='mypage'),
     path('user-info/',user_info, name='user_info'),
-    path('mypost/',mypost,name='mypost')
+    path('mypost/',mypost,name='mypost'),
+    path('myscrap/', myscrap, name='myscrap'),
 ]

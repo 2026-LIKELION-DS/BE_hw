@@ -28,6 +28,28 @@
         <a href="{% url 'posts:update' post.id %}">수정하기</a>
         <a href="{% url 'posts:delete' post.id %}">삭제하기</a>
     {% endif %}
+
+    <p>공감 {{ post.like.count }} | 스크랩 {{ post.scrap.count }}</p>
+    {% if request.user.is_authenticated %}
+        <form method="POST" action="{% url 'posts:like' post.id %}">
+            {% csrf_token %}
+            {% if request.user in post.like.all %}
+                <button type="submit">공감 취소</button>
+            {% else %}
+                <button type="submit">공감</button>
+            {% endif %}
+        </form>
+
+        <form method="POST" action="{% url 'posts:scrap' post.id %}">
+            {% csrf_token %}
+            {% if request.user in post.scrap.all %}
+                <button type="submit">스크랩 취소</button>
+            {% else %}
+                <button type="submit">스크랩</button>
+            {% endif %}
+        </form>
+    {% endif %}
+
     <hr>
 
     <h3>댓글</h3>

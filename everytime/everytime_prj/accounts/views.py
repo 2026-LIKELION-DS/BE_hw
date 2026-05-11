@@ -46,3 +46,8 @@ def mypost(request):
     posts = request.user.posts.all().order_by('-created_at')
     
     return render(request, 'accounts/mypost.html',{'posts':posts})
+
+@login_required
+def myscrap(request):
+    scrapped_posts = request.user.scrap_posts.all().order_by('-created_at')
+    return render(request, 'accounts/myscrap.html', {'scrapped_posts': scrapped_posts})
