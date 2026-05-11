@@ -6,8 +6,9 @@
     <title>Document</title>
 </head>
 <body>
-    <a href = "{% url 'posts:main' %}">메인페이지로 돌아가기</a><br><br>
-    nickname: {{ post.author.nickname }}<br>
+
+</html><a href = "{% url 'posts:main' %}">메인페이지로 돌아가기</a><br><br>
+    nickname: {{ post.author.nickname }}<br><br>
     <a href = "{% url 'accounts:logout' %}">로그아웃</a><hr>
     <h2>
     {{ post.title }}<br>
@@ -17,13 +18,33 @@
     {% if post.is_anonymous %}
         익명<br><br>
     {% else %}
-        {{ post.author.nickname }}<br><br>
+        {{ post.author.nickname }}<br>
     {% endif %}
 
+    {% if post.image %}
+        <img width = "320" height = "240" src = "{{ post.image.url }}">
+    {% endif %}
+    {% if post.video %}
+        <video width = "320" heigth = "240" controls>
+            <source src = "{{ post.video.url }}" type ="video/mp4">
+        </video>
+    {% endif %}<br>
     <a href = "{% url 'posts:update' post.id%}">수정하기</a>
-    <a href = "{% url 'posts:delete' post.id%}">삭제하기</a><br><hr>
+    <a href = "{% url 'posts:delete' post.id%}">삭제하기</a><br><br>
+    공감 {{ post.likes.count }}개 | 스크랩 {{ post.scraps.count }}개<br><br>
 
-    
+    {% if user in post.likes.all %}
+    <a href="{% url 'posts:post_like' post.id %}"><button>공감 취소</button></a>
+    {% else %}
+    <a href="{% url 'posts:post_like' post.id %}"><button>공감</button></a>
+    {% endif %}
+
+    {% if user in post.scraps.all %}
+    <a href="{% url 'posts:post_scrap' post.id %}"><button>스크랩 취소</button></a>
+    {% else %}
+    <a href="{% url 'posts:post_scrap' post.id %}"><button>스크랩</button></a>
+    {% endif %}<hr>
+
     
     <h3>댓글</h3>
     {% for comment in post.comments.all %}
@@ -32,21 +53,17 @@
             {% else %}
                 {{ comment.author.username }}
             {% endif %}
-                : {{ comment.content }} - {{ comment.created_at}}
+                : {{ comment.content }} - {{ comment.created_at}}<br><br>
             
             {% if comment.author == user %}
-                <a href = "{% url 'posts:comment_delete' comment.id %}">삭제하기</a><br><br>
+                <a href = "{% url 'posts:comment_delete' comment.id %}">삭제하기</a><br>
             {% endif %}
         {% empty %}
         댓글이 없습니다.<br>
         {% endfor %}
-    <br>
-     
+    <br>  
     <form action="{% url 'posts:comment_create' post.id %}" method="POST">
         {% csrf_token %}
         댓글 <input type="text" name="content">
         <input type="submit" value="작성">
         <input type="checkbox" name="anonymous" id="comment_anon">익명
-
-</body>
-</html>
