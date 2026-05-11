@@ -6,10 +6,11 @@
     <title>Document</title>
 </head>
 <body>
+    {% load humanize %}
     {% for post in posts %}
         <a href="{% url 'posts:detail' post.id %}">{{ post.title }}</a></h3>
         <p>{{ post.content }}</p>
-        <p>작성일 - {{ post.created_at }}</p>
+        <p>작성일 - {{ post.created_at|naturaltime }}</p>
         <p>작성자 - {{ post.author.username }}</p>
         <br>
 

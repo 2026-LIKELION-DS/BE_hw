@@ -6,13 +6,23 @@
     <title>Document</title>
 </head>
 <body>
+    {% load humanize %}
     <a href="{% url 'posts:main' %}">메인페이지로 돌아가기</a><br>
     <p>nickname : {{ request.user.nickname }}</p>
     <a href="{% url 'posts:main' %}">로그아웃</a><hr>
 
     <h2>{{ post.title }}</h2>
     <p>{{ post.content }}</p>
-    <p>{{ post.created_at }}</p>
+    {% if post.image %}
+        <img width="320" height="240" src="{{ post.image.url }}">
+    {% endif %}
+    {% if post.video %}
+        <video width="320" height="240" controls>
+            <source src="{{post.video.url }}" type="video/mp4">
+        </video>
+    {% endif %}
+
+    <p>{{ post.created_at|naturaltime }}</p>
     {% if post.is_anonymous %}
         익명
     {% else %}
@@ -23,7 +33,21 @@
     <br />
     {% if request.user == post.author %}
     <a href="{% url 'posts:update' post.id %}">수정하기</a><br>
-    <a href="{% url 'posts:delete' post.id %}">삭제하기</a>
+    <a href="{% url 'posts:delete' post.id %}">삭제하기</a><br>
+    {% endif %}
+
+    공감 {{ post.like.count }} | 스크랩 {{ post.scrap.count }}<br>
+
+    {% if request.user in post.like.all %}
+        <a href="{% url 'posts:like' post.id %}">공감 취소</a>
+    {% else %}
+        <a href="{% url 'posts:like' post.id %}">공감</a>
+    {% endif %}
+
+    {% if request.user in post.scrap.all %}
+        <a href="{% url 'posts:scrap' post.id %}">스크랩 취소</a>
+    {% else %}
+        <a href="{% url 'posts:scrap' post.id %}">스크랩</a>
     {% endif %}
 
     <h2>댓글</h2>

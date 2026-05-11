@@ -10,5 +10,6 @@ urlpatterns = [
     path('', mypage, name='mypage'),
     path('user-info/', user_info, name='user-info'),
     path('mypage/', mypage, name='mypage'), 
-    path('mypost/', mypost, name='mypost')
+    path('mypost/', mypost, name='mypost'),
+    path('myscrap/', myscrap, name='myscrap')
 ]
