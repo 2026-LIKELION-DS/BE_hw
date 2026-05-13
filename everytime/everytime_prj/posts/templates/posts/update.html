@@ -23,7 +23,7 @@
         <label>내용 - </label><br>
         <textarea name="content" rows="5" required>{{ post.content }}</textarea><br><br>
         
-        <input type="checkbox" name="is_anoymouse" id="anon" {% if post.is_anoymouse %}checked{% endif %}>
+        <input type="checkbox" name="is_anonymous" id="anon" {% if post.is_anonymous %}checked{% endif %}>
         <label for="anon">익명</label>
         
         <button type="submit">수정하기</button>

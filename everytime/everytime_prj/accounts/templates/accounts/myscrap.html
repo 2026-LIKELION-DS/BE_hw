@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <a href="{% url 'posts:main' %}">메인페이지로 돌아가기</a>
+    <h2>내가 스크랩한 글!</h2>
+
+    <hr>
+
+    {% for post in posts %}
+        <div>
+            <a href="{% url 'posts:detail' post.id %}">
+                <h4>{{ post.title }}</h4>
+            </a>
+            <p>{{ post.content }}</p>
+            <p><small>{{ post.created_at }}</small></p>
+            <p>
+                {% if post.is_anonymous %}익명{% else %}{{ post.author.username }}{% endif %}
+            </p>
+            <hr>
+        </div>
+    {% empty %}
+        <p>스크랩한 글이 없습니다.</p>
+    {% endfor %}
+</body>
+</html>
