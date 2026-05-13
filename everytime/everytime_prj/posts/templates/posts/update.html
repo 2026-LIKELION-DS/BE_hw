@@ -1,24 +1,48 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>글 수정</h1>
-    <form method="POST">
-        {% csrf_token %}
-        <input type="text" name="title" value="{{ post.title }}" required />
-        <br />
-        <textarea name="content" required>{{ post.content }}</textarea>
-        <br />
-        <label>
-            <input type="checkbox" name="is_anonymous"
-                {% if post.is_anonymous %} checked {% endif %} />
-            익명
-        </label>
-        <button type="submit">수정 완료</button>
-    </form>
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>글 수정</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="title" value="{{ post.title }}" required />
+            <br />
+            <textarea name="content" required>{{ post.content }}</textarea>
+            <br />
+
+            {% if post.image %}
+            <p>
+                기존 이미지:
+                <img width="320" height="240" src="{{ post.image.url }}" />
+            </p>
+            {% endif %} 이미지 변경 - <input type="file" name="image" /><br />
+            <br />
+
+            {% if post.video %}
+            <p>
+                기존 동영상:
+                <video width="320" height="240" controls>
+                    <source src="{{ post.video.url }}" type="video/mp4" />
+                </video>
+            </p>
+            {% endif %} 동영상 변경 - <input type="file" name="video" /><br />
+            <br />
+
+            <label>
+                <input
+                    type="checkbox"
+                    name="is_anonymous"
+                    {% if post.is_anonymous %}
+                    checked
+                    {% endif %}
+                />
+                익명
+            </label>
+            <button type="submit">수정 완료</button>
+        </form>
+    </body>
 </html>

@@ -4,6 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from posts.models import Post
+from posts.models import Scrap
 from django.contrib.auth.decorators import login_required
 
 def signup(request):
@@ -47,3 +48,9 @@ def user_info(request):
 def mypost(request):
     posts = Post.objects.filter(author=request.user).order_by('-created_at')
     return render(request, 'accounts/mypost.html', {'posts': posts})
+
+@login_required
+def myscrap(request):
+    scraps = Scrap.objects.filter(user=request.user)
+    posts = [scrap.post for scrap in scraps]
+    return render(request, 'accounts/myscrap.html', {'posts': posts})

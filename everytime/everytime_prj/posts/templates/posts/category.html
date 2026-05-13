@@ -1,0 +1,46 @@
+{% load humanize %}
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{{ category.name }}</title>
+    </head>
+    <body>
+        <a href="{% url 'posts:main' %}">메인페이지로 돌아가기</a>
+
+        {% if request.user.is_authenticated %}
+        <p>nickname : {{ request.user.nickname }}</p>
+        <a href="{% url 'accounts:mypage' %}">마이페이지</a>
+        <a href="{% url 'accounts:logout' %}">로그아웃</a>
+        <hr />
+
+        <h2>{{ category.name }}</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="text" name="title" placeholder="제목 입력" required />
+            <br />
+            <textarea
+                name="content"
+                placeholder="본문 입력"
+                required
+            ></textarea>
+            <br />
+            <p>
+                이미지 <input type="file" name="image" /> <br /><br />
+                동영상 <input type="file" name="video" /><br /><br />
+            </p>
+            <label>
+                <input type="checkbox" name="is_anonymous" />
+                익명
+            </label>
+            <button type="submit">작성 완료</button>
+        </form>
+        <hr />
+        {% endif %} {% for post in posts %}
+        <a href="{% url 'posts:detail' post.id %}"><h2>{{ post.title }}</h2></a>
+        <p>{{ post.created_at|naturaltime }}</p>
+        <hr />
+        {% endfor %}
+    </body>
+</html>

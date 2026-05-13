@@ -6,41 +6,38 @@
         <title>Document</title>
     </head>
     <body>
-        {% if request.user.is_authenticated %} 
-        <p>
-            nickname : {{request.user.nickname}}
-        </p>
+        {% for item in category_posts %}
+        <a href="{% url 'posts:category' item.category.slug %}"
+            >{{ item.category.name }}</a
+        >
+        {% endfor %}
+        <hr />
+
+        {% if request.user.is_authenticated %}
+        <p>nickname : {{request.user.nickname}}</p>
 
         <a href="{% url 'accounts:mypage' %}">마이페이지</a>
         <a href="{% url 'accounts:logout' %}">로그아웃</a>
-        <hr>
-        <form method="POST">
-            {% csrf_token %}
-            <input type="text" name="title" placeholder="제목 입력" required />
-            <br />
-            <textarea name="content" placeholder="본문 입력" required></textarea>
-            <br />
-            <label>
-                <input type="checkbox" name="is_anonymous" />
-                익명
-            </label>
-            <button type="submit">작성 완료</button>
-        </form>
+        <hr />
 
         {% else %}
         <a href="{% url 'accounts:login' %}">로그인</a>
         <a href="{% url 'accounts:signup' %}">회원가입</a>
-        {% endif %}
-
-        {% for post in posts %}
-            <a href="{% url 'posts:detail' post.id %}">
-                <h2>{{post.title}}</h2>
-            </a>
-            <p>{{post.content}}</p>
-            <p>{{post.created_at}}</p>
-            <hr />
-        {% endfor %}
-
+        {% endif %} 
+        
+        {% for item in category_posts %}
+        <div>
+            <h3><a href="{% url 'posts:category' item.category.slug %}">{{ item.category.name }}</a></h3>
+            {% for post in item.posts %}
+            <p>
+                <a href="{% url 'posts:detail' post.id %}">{{ post.title }}</a>
+                <br>
+            </p>
+            {% empty %}
+            <p>글이 없습니다.</p>
+            {% endfor %}
+        </div>
         <hr />
+        {% endfor %}
     </body>
 </html>

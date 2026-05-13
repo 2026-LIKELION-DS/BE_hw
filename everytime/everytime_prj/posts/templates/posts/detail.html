@@ -22,6 +22,16 @@
     <h4><p>{{ post.content }}</p></h4><br>
     <h4><p>{{ post.created_at }}</p></h4> 
 
+    {% if post.image %}
+        <img width="320" height="240" src="{{ post.image.url }}">
+    {% endif %}
+
+    {% if post.video %}
+        <video width="320" height="240" controls>
+            <source src="{{ post.video.url }}" type="video/mp4">
+        </video>
+    {% endif %}
+
     <p>
         {% if post.is_anonymous %}
             익명으로 쓴 글
@@ -31,8 +41,34 @@
     </p>
 
     {% if request.user == post.author %}
-        <a href="{% url 'posts:update' post.id %}">수정</a>
-        <a href="{% url 'posts:delete' post.id %}">삭제</a>
+        <a href="{% url 'posts:update' post.id %}">수정하기</a>
+        <a href="{% url 'posts:delete' post.id %}">삭제하기</a>
+    {% endif %}
+
+    <p>공감 {{ post.likes.count }}개 | 스크랩 {{ post.scraps.count }}</p>
+
+    {% if request.user in post.like.all %}
+        <form method="POST" action="{% url 'posts:like' post.id %}">
+            {% csrf_token %}
+            <button type="submit">공감 취소</button>
+        </form>
+    {% else %}
+        <form method="POST" action="{% url 'posts:like' post.id %}">
+            {% csrf_token %}
+            <button type="submit">공감</button>
+        </form>
+    {% endif %}
+
+    {% if request.user in post.scrap.all %}
+        <form method="POST" action="{% url 'posts:scrap' post.id %}">
+            {% csrf_token %}
+            <button type="submit">스크랩 취소</button>
+        </form>
+    {% else %}
+        <form method="POST" action="{% url 'posts:scrap' post.id %}">
+            {% csrf_token %}
+            <button type="submit">스크랩</button>
+        </form>
     {% endif %}
 
     <HR>
