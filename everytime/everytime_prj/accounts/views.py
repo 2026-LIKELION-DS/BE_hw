@@ -45,3 +45,7 @@ def mypost(request):
     posts = Post.objects.filter(author=request.user).order_by('-id')
 
     return render(request, 'accounts/mypost.html', {'posts': posts})
+
+def myscrap(request):
+    posts = request.user.scrap_posts.all().order_by('-id')
+    return render(request, 'accounts/myscrap.html', {'posts':posts})
